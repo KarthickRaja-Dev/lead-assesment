@@ -17,7 +17,7 @@ const LeadDashboard = () => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/leads');
+      const response = await axios.get('https://lead-assesment.onrender.com/api/leads');
       setLeads(response.data.data);
       setLoading(false);
     } catch (err) {
