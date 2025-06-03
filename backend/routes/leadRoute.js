@@ -16,7 +16,6 @@ router.post('/', createLead);
 // Get all leads with filtering and sorting
 router.get('/', getLeads);
 
-// Get single lead by ID
 router.get('/:id', getLead);
 
 // Update lead

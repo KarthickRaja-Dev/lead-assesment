@@ -1,0 +1,127 @@
+API Endpoints
+
+// @desc    Create a new lead
+// @route   POST /api/leads
+// @access  Public
+// @body    {name: string, email: string, phone: string, budget: number, location: string}
+// @return  {success: true, data: Lead} or {success: false, error: string}
+
+// @desc    Get all leads with optional filtering
+// @route   GET /api/leads
+// @access  Public
+// @query   minBudget - Minimum budget filter (optional)
+// @query   maxBudget - Maximum budget filter (optional) 
+// @query   location - Location filter (optional)
+// @return  {success: true, data: Lead[]} or {success: false, error: string}
+
+// @desc    Update a lead by ID
+// @route   PUT /api/leads/:id
+// @access  Public
+// @params  id - The MongoDB ObjectId of the lead
+// @body    {name?: string, email?: string, phone?: string, budget?: number, location?: string}
+// @return  {success: true, data: Lead} or {success: false, error: string}
+
+// @desc    Delete a lead by ID
+// @route   DELETE /api/leads/:id
+// @access  Public
+// @params  id - The MongoDB ObjectId of the lead
+// @return  {success: true, data: Lead} or {success: false, error: string}
+
+
+// @desc    Get a single lead by ID
+// @route   GET /api/leads/:id
+// @access  Public
+// @params  id - The MongoDB ObjectId of the lead
+// @return  {success: true, data: Lead} or {success: false, error: string}
+
+Database Schema
+
+// Lead Schema
+{
+  name: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  email: {
+    type: String, 
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  phone: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  budget: {
+    type: Number,
+    required: true,
+    min: 0
+  },
+  location: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  score: {
+    type: Number,
+    default: 0
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+}
+
+Sample MongoDB Queries:
+
+// Create a new lead
+db.leads.insertOne({
+  name: "John Doe",
+  email: "john@example.com", 
+  phone: "123-456-7890",
+  budget: 5000,
+  location: "New York",
+  score: 85
+})
+
+// Find leads with budget between 1000 and 5000
+db.leads.find({
+  budget: { 
+    $gte: 1000,
+    $lte: 5000
+  }
+})
+
+// Find leads in a specific location
+db.leads.find({
+  location: /new york/i
+})
+
+// Update lead score
+db.leads.updateOne(
+  { _id: ObjectId("leadId") },
+  { 
+    $set: { score: 90 },
+    $currentDate: { updatedAt: true }
+  }
+)
+
+// Delete a lead
+db.leads.deleteOne({
+  _id: ObjectId("leadId")
+})
+
+// Get leads sorted by score (descending)
+db.leads.find().sort({ score: -1 })
+
+// Get leads with pagination (10 per page)
+db.leads.find()
+  .skip(pageNumber * 10)
+  .limit(10)
