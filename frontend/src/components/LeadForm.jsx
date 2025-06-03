@@ -22,7 +22,7 @@ const LeadForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/leads', formData);
+      const response = await axios.post('https://lead-assesment.onrender.com/api/leads', formData);
 
       if (response.data.success) {
         setMessage('Lead submitted successfully!');
